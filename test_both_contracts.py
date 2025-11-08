@@ -27,14 +27,18 @@ market1.place_bet("Bob", "away", 50)
 market1.place_bet("Charlie", "draw", 50)
 print()
 
-# Mock API response for score-based market
+# Mock API response for score-based market (randomized scores)
+import random
+home_score = random.randint(0, 4)
+away_score = random.randint(0, 4)
+
 mock_response = {
     "events": [{
         "idEvent": "441613",
         "strEvent": "Arsenal vs Chelsea",
         "strStatus": "Match Finished",
-        "intHomeScore": "2",
-        "intAwayScore": "2"
+        "intHomeScore": str(home_score),
+        "intAwayScore": str(away_score)
     }]
 }
 
