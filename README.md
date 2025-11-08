@@ -65,3 +65,34 @@ README.md                     # This file
 ✅ **Real APIs** - TheSportsDB (not fake data)  
 ✅ **Professional UI** - 4 users, wallets, real-time logs  
 ✅ **Tested** - 600+ test cases validating payout logic
+
+## Testing & Validation
+
+### Run All Tests
+```bash
+# Backend integration test (both markets)
+python3 test_both_contracts.py
+
+# Comprehensive frontend scenarios (600+ test cases)
+python3 test_frontend_scenarios.py
+
+# Backend unit test
+python3 test_contract.py
+```
+
+**Test Results:** ✅ ALL TESTS PASSING
+- Score market: Random outcomes (0-4 scores), correct payouts
+- MVP market: Random selection from actual bets, proper payout distribution
+- Edge cases: Single bettor, multiple bettors same outcome, proportional splits
+
+## GenLayer Hackathon Ready
+
+This project is built for the **GenLayer November 2025 Hackathon** (https://dorahacks.io/hackathon/genlayer-25-nov/detail)
+
+**Compliance Checklist:**
+- ✅ Intelligent Contracts with GenLayer features
+- ✅ Oracle-less internet access (TheSportsDB API)
+- ✅ AI integration for subjective resolution
+- ✅ Real-world use case (prediction markets)
+- ✅ Production-ready code with tests
+- ✅ Professional dApp interface
