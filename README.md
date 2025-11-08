@@ -17,10 +17,10 @@ Visit `http://localhost:3000`
 ### Screenshots
 
 **Placing Bets**
-![Betting Phase](screenshots/bet.png)
+![Betting Phase](screenshots/bet.png?raw=true)
 
 **Market Resolution**
-![Resolution Phase](screenshots/resolve.png)
+![Resolution Phase](screenshots/resolve.png?raw=true)
 
 ## Tech Stack
 
