@@ -3,7 +3,7 @@
 ## Overview
 
 Two **Intelligent Contracts** showcasing GenLayer's unique capabilities:
-- **Market 1 (Score):** Objective resolution via TheSportsDB API (oracle-less internet access)
+- **Market 1 (Score):** Objective resolution via TheSportsDB API (oracle-less internet access). Backend calls real API; frontend simulates for demo.
 - **Market 2 (MVP):** Subjective AI-judged market (AI integration for ground truth)
 
 ## Demo
