@@ -156,7 +156,34 @@
             <button id="resolve-market-btn">Resolve Market</button>
         </div>
 
-        <div id="logs"></div>
+        <div class="market-card">
+            <h2>🤖 Advanced: AI Justice Market (MVP)</h2>
+            <p><strong>Powered by GenLayer AI Judge</strong> - This market uses AI to analyze match reports and determine the Man of the Match.</p>
+            <div class="pools">
+                <div class="pool">
+                    <span>Total Pot</span>
+                    <strong id="mvp-total-pot">0</strong>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="mvp-user-address">Your Address (Simulated)</label>
+                <input type="text" id="mvp-user-address" placeholder="e.g., 'Alice'">
+            </div>
+            <div class="form-group">
+                <label for="mvp-player">Player Name (who will be MVP?)</label>
+                <input type="text" id="mvp-player" placeholder="e.g., 'Bukayo Saka'">
+            </div>
+            <div class="form-group">
+                <label for="mvp-amount">Amount</label>
+                <input type="number" id="mvp-amount" placeholder="100">
+            </div>
+            <button id="place-mvp-bet-btn">Place MVP Bet</button>
+        </div>
+
+        <div class="market-card">
+            <button id="resolve-mvp-market-btn" style="background-color: #9c27b0;">Resolve MVP Market (AI Judge)</button>
+        </div>
     </div>
 
     <script>
@@ -166,23 +193,34 @@
             // Get all interactive elements
             const placeBetBtn = document.getElementById("place-bet-btn");
             const resolveMarketBtn = document.getElementById("resolve-market-btn");
+            const placeMvpBetBtn = document.getElementById("place-mvp-bet-btn");
+            const resolveMvpMarketBtn = document.getElementById("resolve-mvp-market-btn");
             const logs = document.getElementById("logs");
 
             // Pool amounts
             const poolHomeEl = document.getElementById("pool-home-amount");
             const poolAwayEl = document.getElementById("pool-away-amount");
             const poolDrawEl = document.getElementById("pool-draw-amount");
+            const mvpTotalPotEl = document.getElementById("mvp-total-pot");
 
             // Input fields
             const userAddressEl = document.getElementById("user-address");
             const teamChoiceEl = document.getElementById("team-choice");
             const betAmountEl = document.getElementById("bet-amount");
+            const mvpUserAddressEl = document.getElementById("mvp-user-address");
+            const mvpPlayerEl = document.getElementById("mvp-player");
+            const mvpAmountEl = document.getElementById("mvp-amount");
 
             // Application state
             let poolHome = 0;
             let poolAway = 0;
             let poolDraw = 0;
             let isResolved = false;
+            
+            // MVP Market state
+            let mvpBets = {}; // {"Bukayo Saka": [{"user": "Alice", "amount": 100}]}
+            let mvpTotalPot = 0;
+            let mvpIsResolved = false;
 
             // Log helper function
             function log(message) {
@@ -279,6 +317,111 @@
                     log("Market is now resolved and closed.");
                     isResolved = true;
                 }, 3000); // 3-second delay
+            });
+
+            // --- Place MVP Bet Button Logic ---
+            placeMvpBetBtn.addEventListener("click", () => {
+                if (mvpIsResolved) {
+                    log("Error: MVP Market is already resolved.");
+                    return;
+                }
+
+                const user = mvpUserAddressEl.value || "Anonymous";
+                const playerName = mvpPlayerEl.value || "";
+                const amount = parseInt(mvpAmountEl.value) || 0;
+
+                if (!playerName) {
+                    log("Error: Please enter a player name.");
+                    return;
+                }
+
+                if (amount <= 0) {
+                    log("Error: Please enter a valid amount.");
+                    return;
+                }
+
+                log(`Simulating: ${user} bets ${amount} on MVP '${playerName}'...`);
+
+                // Simulate updating MVP bets
+                if (!mvpBets[playerName]) {
+                    mvpBets[playerName] = [];
+                }
+                mvpBets[playerName].push({"user": user, "amount": amount});
+                mvpTotalPot += amount;
+                mvpTotalPotEl.innerText = mvpTotalPot;
+
+                log(`Success: MVP bet placed. Total MVP Pot: ${mvpTotalPot}`);
+                
+                // Clear inputs
+                mvpUserAddressEl.value = "";
+                mvpPlayerEl.value = "";
+                mvpAmountEl.value = "";
+            });
+
+            // --- Resolve MVP Market Button Logic ---
+            resolveMvpMarketBtn.addEventListener("click", () => {
+                if (mvpIsResolved) {
+                    log("Error: MVP Market has already been resolved.");
+                    return;
+                }
+
+                if (mvpTotalPot === 0) {
+                    log("Error: No MVP bets placed.");
+                    return;
+                }
+
+                log("\n========================================");
+                log("🤖 AI JUSTICE MARKET RESOLUTION");
+                log("========================================");
+                log("Resolving MVP Market...");
+                log("Calling GenLayer AI Judge...");
+                log("Step 1: Calling Google News API for match reports...");
+                log("Step 2: Retrieved 5 match report articles.");
+                log("Step 3: Feeding article summaries to GenLayer AI Model...");
+                log("Step 4: AI Prompt: 'Who was Man of the Match?'");
+
+                // Disable buttons to show work is being done
+                placeBetBtn.disabled = true;
+                resolveMarketBtn.disabled = true;
+                placeMvpBetBtn.disabled = true;
+                resolveMvpMarketBtn.disabled = true;
+
+                // Simulate AI analysis (5-second delay for drama)
+                setTimeout(() => {
+                    log("Step 5: AI Analysis in progress...");
+                    log("Reading articles...");
+                    log("Extracting player mentions...");
+                    log("Calculating player performance scores...");
+                    log("Filtering top candidates...");
+                    
+                    // AI's decision: Bukayo Saka is MVP
+                    const mvpWinner = "Bukayo Saka";
+                    
+                    log("----------------------------------------");
+                    log(`✓ AI JUDGE DECISION: ${mvpWinner}`);
+                    log("----------------------------------------");
+                    
+                    // Process payouts
+                    if (mvpWinner in mvpBets) {
+                        const winnersList = mvpBets[mvpWinner];
+                        const winnersPot = winnersList.reduce((sum, bet) => sum + bet.amount, 0);
+                        
+                        log(`\nProcessing payouts for '${mvpWinner}'`);
+                        log(`Winners' Pool: ${winnersPot} tokens`);
+                        log(`Total Pot: ${mvpTotalPot} tokens\n`);
+                        
+                        for (let bet of winnersList) {
+                            const payout = (bet.amount / winnersPot) * mvpTotalPot;
+                            log(`PAYOUT PROCESSED (Simulation): ${bet.user} receives ${payout.toFixed(2)} tokens.`);
+                        }
+                    } else {
+                        log(`No bets were placed on the winner: ${mvpWinner}`);
+                    }
+
+                    log("MVP Market is now resolved and closed.");
+                    log("========================================\n");
+                    mvpIsResolved = true;
+                }, 5000); // 5-second delay
             });
 
             log("Frontend initialized. Ready to place bets.");

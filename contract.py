@@ -152,3 +152,161 @@ class RealPredictionMarketContract:
             amount = bet['amount']
             payout = (amount / winners_pot) * total_pot
             print(f"PAYOUT PROCESSED (Simulation): {user} receives {payout} tokens.")
+
+
+# ============================================================================
+# === AI JUSTICE MARKET CONTRACT (Advanced: Subjective Resolution) ===
+# ============================================================================
+
+class AIJusticeMarketContract:
+    """
+    An ADVANCED "Man of the Match (MVP)" Market using AI Judge.
+    
+    This demonstrates GenLayer's unique capability: Using AI + Internet Access
+    to resolve SUBJECTIVE bets (not just objective scores).
+    
+    How it works:
+    1. Contract fetches multiple news articles about the match from Google News API
+    2. Contract feeds these articles to an AI Model (e.g., GPT-4, Llama)
+    3. AI analyzes the articles and determines: "Who was the Man of the Match?"
+    4. AI's answer becomes the "truth" and payouts are processed accordingly
+    """
+    
+    def __init__(self, event_id, home_team, away_team):
+        """
+        Constructor: Deploys the AI Justice Market.
+        
+        Args:
+            event_id: Match ID from TheSportsDB
+            home_team: Home team name (e.g., "Arsenal")
+            away_team: Away team name (e.g., "Chelsea")
+        """
+        print(f"AI Justice Market initialized for Event: {event_id} ({home_team} vs {away_team})")
+        self.event_id = event_id
+        self.home_team = home_team
+        self.away_team = away_team
+        
+        # State variables
+        self.bets = {}  # Stores bets like: {"Bukayo Saka": [{"user": "Alice", "amount": 100}]}
+        self.total_pot = 0
+        self.is_resolved = False
+        self.mvp_winner = None
+
+    def place_mvp_bet(self, user_address, player_name, amount):
+        """
+        Users can bet on who they think will be the Man of the Match.
+        
+        Args:
+            user_address: User's wallet address (simulated)
+            player_name: Name of the player they're betting on
+            amount: Amount of tokens bet
+        """
+        if self.is_resolved:
+            print(f"Error for {user_address}: Market is resolved.")
+            return
+
+        print(f"New MVP Bet: {user_address} bets {amount} on '{player_name}'")
+        
+        if player_name not in self.bets:
+            self.bets[player_name] = []
+        
+        self.bets[player_name].append({"user": user_address, "amount": amount})
+        self.total_pot += amount
+        print(f"Total MVP Pot: {self.total_pot}")
+
+    def resolve_mvp_market(self):
+        """
+        Core function: Simulates the entire AI Judge process.
+        
+        In a real GenLayer environment, this would:
+        1. Call Google News API for match reports
+        2. Extract and summarize 5+ articles
+        3. Feed summaries to an AI Model (GenLayer-provided)
+        4. Ask AI: "Who was Man of the Match based on these reports?"
+        5. Use AI's answer as ground truth
+        
+        For this hackathon, we're mocking the process.
+        """
+        if self.is_resolved:
+            print("MVP Market is already resolved.")
+            return
+
+        print("\n" + "="*70)
+        print("AI JUSTICE MARKET RESOLUTION (MVP Market)")
+        print("="*70)
+        
+        print(f"\nResolving AI Justice Market for: {self.home_team} vs {self.away_team}")
+        print("Step 1: Calling Google News API for match reports...")
+        
+        # Simulated news snippets (in reality, these come from real news APIs)
+        mock_articles = [
+            "Arsenal dominated the match with Bukayo Saka's exceptional performance.",
+            "Bukayo Saka was named Man of the Match by Sky Sports after his stunning display.",
+            "The MVP award goes to Saka, who scored and provided crucial assists.",
+            "Saka's performance was the decisive factor in Arsenal's victory.",
+            "Despite Chelsea's efforts, Saka was the standout player on the pitch."
+        ]
+        
+        print("Step 2: Retrieved 5 match report articles.")
+        print("Step 3: Feeding article summaries to GenLayer AI Model (GPT-4 simulation)...")
+        print("Step 4: AI Prompt: 'Based on these match reports, who was the Man of the Match?'")
+        
+        # === SIMULATED AI ANALYSIS ===
+        # In reality, this would call: genLayer.ai.analyze(articles, prompt)
+        print("\nStep 5: AI Analysis in progress...")
+        print("-" * 70)
+        
+        # Simulated AI process (with verbose logging for transparency)
+        ai_response = self._simulated_ai_analysis(mock_articles)
+        
+        print("-" * 70)
+        print(f"\n✓ AI JUDGE DECISION: The Man of the Match is: {ai_response}")
+        
+        self.mvp_winner = ai_response
+        self.is_resolved = True
+        
+        # Process payouts
+        self._process_mvp_payouts()
+        print("="*70 + "\n")
+
+    def _simulated_ai_analysis(self, articles):
+        """
+        Simulates the AI analysis process.
+        In a real system, this would call GenLayer's AI infrastructure.
+        """
+        # For this hackathon, we hardcode the MVP based on the mock articles
+        # (In reality, the AI would analyze the actual articles)
+        
+        print("Reading articles...")
+        print("Extracting player mentions...")
+        print("Calculating player performance scores...")
+        print("Filtering top candidates...")
+        
+        # The AI "decides" Bukayo Saka is the MVP
+        return "Bukayo Saka"
+
+    def _process_mvp_payouts(self):
+        """
+        Distributes the total pot to users who correctly bet on the MVP.
+        """
+        if not self.mvp_winner or self.mvp_winner not in self.bets:
+            print(f"No bets were placed on the winner: {self.mvp_winner}")
+            return
+
+        winners_list = self.bets[self.mvp_winner]
+        winners_pot = sum(bet['amount'] for bet in winners_list)
+        
+        if winners_pot == 0:
+            print("No bets were placed on the winning outcome.")
+            return
+
+        print(f"\nProcessing payouts for '{self.mvp_winner}'")
+        print(f"Winners' Pool: {winners_pot} tokens")
+        print(f"Total Pot: {self.total_pot} tokens")
+        print()
+        
+        for bet in winners_list:
+            user = bet['user']
+            amount = bet['amount']
+            payout = (amount / winners_pot) * self.total_pot
+            print(f"PAYOUT PROCESSED (Simulation): {user} receives {payout} tokens.")
