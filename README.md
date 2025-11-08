@@ -8,10 +8,12 @@ Two **Intelligent Contracts** showcasing GenLayer's unique capabilities:
 
 ## Demo
 
+**Live Demo:** https://genlayerpre.vercel.app/
+
+**Local Demo:**
 ```bash
 python -m http.server 3000
 ```
-
 Visit `http://localhost:3000`
 
 ### Screenshots
