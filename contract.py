@@ -255,13 +255,13 @@ class AIJusticeMarketContract:
         actual_players = list(self.bets.keys())
         chosen_player = random.choice(actual_players)
         
-        # Simulated news snippets featuring the randomly chosen player
+        # Simulated news snippets featuring the randomly chosen player and actual teams
         mock_articles = [
-            f"Arsenal dominated the match with {chosen_player}'s exceptional performance.",
+            f"{self.home_team} dominated the match with {chosen_player}'s exceptional performance.",
             f"{chosen_player} was named Man of the Match by Sky Sports after his stunning display.",
             f"The MVP award goes to {chosen_player}, who scored and provided crucial assists.",
-            f"{chosen_player}'s performance was the decisive factor in Arsenal's victory.",
-            f"Despite Chelsea's efforts, {chosen_player} was the standout player on the pitch."
+            f"{chosen_player}'s performance was the decisive factor in {self.home_team}'s victory.",
+            f"Despite {self.away_team}'s efforts, {chosen_player} was the standout player on the pitch."
         ]
         
         print("Step 2: Retrieved 5 match report articles.")
@@ -291,26 +291,26 @@ class AIJusticeMarketContract:
         Simulates the AI analysis process.
         In a real system, this would call GenLayer's AI infrastructure.
         
-        Returns a random MVP from a list of possible candidates.
+        Extracts player name from articles (all articles mention the same player).
         """
         print("Reading articles...")
         print("Extracting player mentions...")
         print("Calculating player performance scores...")
         print("Filtering top candidates...")
         
-        # Possible MVP candidates (randomized)
-        candidates = [
-            "Bukayo Saka",
-            "Reece James",
-            "Kai Havertz",
-            "Ben White",
-            "Martin Ödegaard",
-            "Declan Rice"
-        ]
+        # All mock articles have the same player name (chosen_player)
+        # Extract it from the first article that contains a player name
+        # Format: "{player} was named Man of the Match"
         
-        # AI "decides" on a random MVP from the candidates
-        selected_mvp = random.choice(candidates)
-        return selected_mvp
+        for article in articles:
+            if "was named Man of the Match" in article:
+                # Extract player name before "was named"
+                parts = article.split(" was named Man of the Match")
+                if parts:
+                    return parts[0].strip()
+        
+        # Fallback - shouldn't reach here
+        return "Unknown"
 
     def _process_mvp_payouts(self):
         """
