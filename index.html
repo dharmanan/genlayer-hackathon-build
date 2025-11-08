@@ -416,20 +416,27 @@
                 setTimeout(() => {
                     mvpMarketState.isResolved = true;
                     
-                    // AI randomly picks a winning player from actual bets (if any)
-                    const mvpCandidates = [
-                        "Bukayo Saka",
-                        "Reece James",
-                        "Kai Havertz",
-                        "Ben White",
-                        "Martin Ödegaard",
-                        "Declan Rice",
-                        "Cole Palmer",
-                        "harry"  // Also include any other players people bet on
-                    ];
+                    // AI picks a winning player from actual bets if any exist
+                    let mvpWinner;
                     
-                    const mvpWinner = mvpCandidates[Math.floor(Math.random() * mvpCandidates.length)];
-                    log(`✓ Mock AI analysis complete. AI Judge decision: '${mvpWinner}'`);
+                    if (mvpMarketState.bets.length === 0) {
+                        // No bets placed, pick random
+                        const mvpCandidates = [
+                            "Bukayo Saka",
+                            "Reece James",
+                            "Kai Havertz",
+                            "Ben White",
+                            "Martin Ödegaard",
+                            "Declan Rice"
+                        ];
+                        mvpWinner = mvpCandidates[Math.floor(Math.random() * mvpCandidates.length)];
+                    } else {
+                        // Pick from players people actually bet on
+                        const actualPlayers = [...new Set(mvpMarketState.bets.map(bet => bet.player))];
+                        mvpWinner = actualPlayers[Math.floor(Math.random() * actualPlayers.length)];
+                    }
+                    
+                    log(`✓ Mock AI analysis complete. AI Judge decision: ${mvpWinner}`);
 
                     // Find all bets on the winning player
                     const winningBets = mvpMarketState.bets.filter(bet => bet.player === mvpWinner);
