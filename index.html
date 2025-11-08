@@ -200,7 +200,17 @@
                     <p style="color: #666; font-size: 0.95em;">Event 441613: Arsenal vs Chelsea<br><strong>Type:</strong> Subjective (AI Judge)</p>
                     <div class="form-group">
                         <label for="mvp-player-name">Player Name</label>
-                        <input type="text" id="mvp-player-name" placeholder="e.g., Bukayo Saka">
+                        <select id="mvp-player-name">
+                            <option value="">-- Select Player --</option>
+                            <option value="Bukayo Saka">Bukayo Saka</option>
+                            <option value="Reece James">Reece James</option>
+                            <option value="Kai Havertz">Kai Havertz</option>
+                            <option value="Ben White">Ben White</option>
+                            <option value="Martin Ödegaard">Martin Ödegaard</option>
+                            <option value="Declan Rice">Declan Rice</option>
+                            <option value="Cole Palmer">Cole Palmer</option>
+                            <option value="Moisés Caicedo">Moisés Caicedo</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="mvp-bet-amount">Amount ($)</label>
@@ -389,7 +399,7 @@
                 const player = mvpPlayerNameEl.value;
 
                 if (!player) {
-                    log("❌ Error: Please enter a player name.");
+                    log("❌ Error: Please select a player.");
                     return;
                 }
                 if (!checkUserAndBalance(amount)) return;
@@ -402,6 +412,7 @@
                 
                 log(`🎯 MVP BET: ${currentUser} bet $${amount} on '${player}'. New balance: $${userBalances[currentUser]}`);
                 log(`   MVP Market Pot: $${mvpMarketState.totalPot}`);
+                mvpPlayerNameEl.value = "";
                 mvpBetAmountEl.value = "";
             });
 
