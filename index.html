@@ -237,30 +237,17 @@
             let userBalances = {};
             let currentUser = "";
             let scoreMarketState = {
-                bets: [],
-                totalPot: 0,
-                isResolved: false,
-                testData: {
-                    "Alice": { team: "home", amount: 100 },
-                    "Bob": { team: "away", amount: 50 },
-                    "Charlie": { team: "draw", amount: 20 },
-                    "David": { team: "draw", amount: 30 },
-                    totalPot: 200,
-                    winner: 'draw',
-                    winners_pot: 50
-                }
+                bets: [
+                    { user: "Alice", team: "home", amount: 100 },
+                    { user: "Charlie", team: "draw", amount: 50 }
+                ],
+                totalPot: 150,
+                isResolved: false
             };
             let mvpMarketState = {
                 bets: [],
                 totalPot: 0,
-                isResolved: false,
-                testData: {
-                    "Alice": { player: "Bukayo Saka", amount: 100 },
-                    "Bob": { player: "Cole Palmer", amount: 50 },
-                    totalPot: 150,
-                    winner: 'Bukayo Saka',
-                    winners_pot: 100
-                }
+                isResolved: false
             };
 
             // --- UI ELEMENTS ---
@@ -372,21 +359,42 @@
 
                 setTimeout(() => {
                     scoreMarketState.isResolved = true;
-                    const testData = scoreMarketState.testData;
-                    log("✓ Mock API call complete. Score: 2-2. Winner: 'draw'");
-
-                    log("✓ Processing payouts for 'draw' winners...");
-                    const payout_charlie = (testData.Charlie.amount / testData.winners_pot) * testData.totalPot;
-                    const payout_david = (testData.David.amount / testData.winners_pot) * testData.totalPot;
                     
-                    if (userBalances["Charlie"] !== undefined) {
-                        userBalances["Charlie"] += payout_charlie;
-                        log(`💰 PAYOUT: Charlie receives $${payout_charlie.toFixed(2)}. New balance: $${userBalances["Charlie"].toFixed(2)}`);
+                    // Generate random score (0-4 for each team)
+                    const homeScore = Math.floor(Math.random() * 5);
+                    const awayScore = Math.floor(Math.random() * 5);
+                    
+                    // Determine winner
+                    let winner;
+                    if (homeScore > awayScore) {
+                        winner = 'home';
+                    } else if (awayScore > homeScore) {
+                        winner = 'away';
+                    } else {
+                        winner = 'draw';
                     }
-                    if (userBalances["David"] !== undefined) {
-                        userBalances["David"] += payout_david;
-                        log(`💰 PAYOUT: David receives $${payout_david.toFixed(2)}. New balance: $${userBalances["David"].toFixed(2)}`);
+                    
+                    log(`✓ Mock API call complete. Score: ${homeScore}-${awayScore}. Winner: '${winner}'`);
+
+                    // Get winners from actual bets
+                    const winners = scoreMarketState.bets.filter(bet => bet.team === winner);
+                    
+                    if (winners.length === 0) {
+                        log("⚠️ No one bet on the winning outcome!");
+                        log("✅ Score Market RESOLVED.");
+                        updateBalanceDisplay();
+                        return;
                     }
+                    
+                    const winnersPot = winners.reduce((sum, bet) => sum + bet.amount, 0);
+                    
+                    log("✓ Processing payouts for '" + winner + "' winners...");
+                    
+                    winners.forEach(bet => {
+                        const payout = (bet.amount / winnersPot) * scoreMarketState.totalPot;
+                        userBalances[bet.user] += payout;
+                        log(`💰 PAYOUT: ${bet.user} receives $${payout.toFixed(2)}. New balance: $${userBalances[bet.user].toFixed(2)}`);
+                    });
                     
                     log("✅ Score Market RESOLVED.");
                     updateBalanceDisplay();
@@ -474,6 +482,10 @@
                 }, 3000);
             });
 
+            // Pre-initialize demo accounts with bets already placed
+            userBalances["Alice"] = 1000 - 100; // 100 bet on home
+            userBalances["Charlie"] = 1000 - 50; // 50 bet on draw
+            
             // Initial Log
             log("🚀 dApp Frontend Initialized. Select a user and deposit funds to begin.");
         });
