@@ -247,13 +247,21 @@ class AIJusticeMarketContract:
         print(f"\nResolving AI Justice Market for: {self.home_team} vs {self.away_team}")
         print("Step 1: Calling Google News API for match reports...")
         
-        # Simulated news snippets (in reality, these come from real news APIs)
+        # Get actual players users bet on
+        if not self.bets:
+            print("No bets placed on MVP. Cannot resolve market.")
+            return
+        
+        actual_players = list(self.bets.keys())
+        chosen_player = random.choice(actual_players)
+        
+        # Simulated news snippets featuring the randomly chosen player
         mock_articles = [
-            "Arsenal dominated the match with Bukayo Saka's exceptional performance.",
-            "Bukayo Saka was named Man of the Match by Sky Sports after his stunning display.",
-            "The MVP award goes to Saka, who scored and provided crucial assists.",
-            "Saka's performance was the decisive factor in Arsenal's victory.",
-            "Despite Chelsea's efforts, Saka was the standout player on the pitch."
+            f"Arsenal dominated the match with {chosen_player}'s exceptional performance.",
+            f"{chosen_player} was named Man of the Match by Sky Sports after his stunning display.",
+            f"The MVP award goes to {chosen_player}, who scored and provided crucial assists.",
+            f"{chosen_player}'s performance was the decisive factor in Arsenal's victory.",
+            f"Despite Chelsea's efforts, {chosen_player} was the standout player on the pitch."
         ]
         
         print("Step 2: Retrieved 5 match report articles.")
