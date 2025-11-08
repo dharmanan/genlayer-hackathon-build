@@ -415,15 +415,38 @@
 
                 setTimeout(() => {
                     mvpMarketState.isResolved = true;
-                    const testData = mvpMarketState.testData;
-                    log("✓ Mock AI analysis complete. AI Judge decision: 'Bukayo Saka'");
-
-                    log("✓ Processing payouts for 'Bukayo Saka' winners...");
-                    const payout_alice = (testData.Alice.amount / testData.winners_pot) * testData.totalPot;
                     
-                    if (userBalances["Alice"] !== undefined) {
-                        userBalances["Alice"] += payout_alice;
-                        log(`💰 PAYOUT: Alice receives $${payout_alice.toFixed(2)}. New balance: $${userBalances["Alice"].toFixed(2)}`);
+                    // AI randomly picks a winning player from actual bets (if any)
+                    const mvpCandidates = [
+                        "Bukayo Saka",
+                        "Reece James",
+                        "Kai Havertz",
+                        "Ben White",
+                        "Martin Ödegaard",
+                        "Declan Rice",
+                        "Cole Palmer",
+                        "harry"  // Also include any other players people bet on
+                    ];
+                    
+                    const mvpWinner = mvpCandidates[Math.floor(Math.random() * mvpCandidates.length)];
+                    log(`✓ Mock AI analysis complete. AI Judge decision: '${mvpWinner}'`);
+
+                    // Find all bets on the winning player
+                    const winningBets = mvpMarketState.bets.filter(bet => bet.player === mvpWinner);
+                    
+                    if (winningBets.length === 0) {
+                        log(`⚠️  No bets were placed on the winner: ${mvpWinner}. No payouts.`);
+                    } else {
+                        log(`✓ Processing payouts for ${mvpWinner} winners...`);
+                        const winnersPot = winningBets.reduce((sum, bet) => sum + bet.amount, 0);
+                        
+                        for (let bet of winningBets) {
+                            const payout = (bet.amount / winnersPot) * mvpMarketState.totalPot;
+                            if (userBalances[bet.user] !== undefined) {
+                                userBalances[bet.user] += payout;
+                                log(`💰 PAYOUT: ${bet.user} receives $${payout.toFixed(2)} for betting on ${mvpWinner}. New balance: $${userBalances[bet.user].toFixed(2)}`);
+                            }
+                        }
                     }
                     
                     log("✅ MVP Market RESOLVED.");
