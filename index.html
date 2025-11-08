@@ -3,457 +3,436 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GenLayer Prediction Market</title>
+    <title>GenLayer dApp Prototype</title>
     <style>
+        /* Global Styles */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #f0f2f5;
+            color: #1c1e21;
             margin: 0;
-            padding: 20px;
+            padding: 24px;
         }
         .container {
-            max-width: 600px;
-            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #053b7c;
         }
         h1 {
             text-align: center;
-            color: #2c3e50;
+            margin-bottom: 24px;
         }
-        .market-card {
+
+        /* Card Base Style */
+        .card {
             background-color: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             padding: 24px;
             margin-bottom: 20px;
         }
-        .market-card h2 {
-            margin-top: 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        .pools {
+
+        /* Wallet Card */
+        .wallet-card {
             display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-            text-align: center;
+            justify-content: space-between;
+            align-items: center;
         }
-        .pool {
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-radius: 8px;
-            flex-basis: 30%;
+        .wallet-card .form-group {
+            display: inline-block;
+            margin-right: 15px;
         }
-        .pool span {
-            display: block;
-            font-size: 0.9em;
-            color: #777;
+        #current-balance {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #28a745;
         }
-        .pool strong {
-            font-size: 1.4em;
-            color: #007bff;
+        #current-user-label {
+            font-size: 1em;
+            color: #555;
         }
+
+        /* Main Content Layout (2 Columns) */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        /* Form & Button Styles */
         .form-group {
             margin-bottom: 15px;
         }
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
+            color: #333;
         }
         .form-group input, .form-group select {
             width: 100%;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 6px;
             border: 1px solid #ddd;
             box-sizing: border-box;
         }
         button {
             width: 100%;
             padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        button:active {
+            transform: scale(0.99);
+        }
+        .btn-primary {
             background-color: #007bff;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: 600;
-            transition: background-color 0.2s;
         }
-        button:hover {
-            background-color: #0056b3;
+        .btn-primary:hover { background-color: #0056b3; }
+        
+        .btn-secondary {
+            background-color: #28a745;
+            color: white;
         }
+        .btn-secondary:hover { background-color: #218838; }
+
         button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
-        #resolve-market-btn {
-            background-color: #28a745;
-        }
-        #resolve-market-btn:hover {
-            background-color: #218838;
-        }
+
+        /* Log Console */
         #logs {
             background-color: #2c3e50;
             color: #ecf0f1;
             padding: 15px;
             border-radius: 8px;
-            height: 150px;
-            overflow-y: scroll;
+            height: 200px;
+            overflow-y: auto;
             font-family: "Courier New", Courier, monospace;
             font-size: 0.9em;
+            margin-top: 20px;
+        }
+        #logs span {
+            display: block;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #eee;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>GenLayer Prediction Market</h1>
+        <h1>🚀 GenLayer dApp Professional Demo</h1>
 
-        <div class="market-card">
-            <h2>Event 441613: Arsenal vs Chelsea</h2>
-            <p>Place your bets on the outcome. The market will be resolved by the Intelligent Contract after the match finishes.</p>
-            <div class="pools">
-                <div class="pool">
-                    <span id="pool-home-label">Home (Arsenal)</span>
-                    <strong id="pool-home-amount">0</strong>
+        <div class="card wallet-card">
+            <div>
+                <h2>💳 Simulated User Wallet</h2>
+                <div class="form-group">
+                    <label for="user-select">Select User (Simulated Login)</label>
+                    <select id="user-select">
+                        <option value="">-- Select --</option>
+                        <option value="Alice">Alice</option>
+                        <option value="Bob">Bob</option>
+                        <option value="Charlie">Charlie</option>
+                        <option value="David">David</option>
+                    </select>
                 </div>
-                <div class="pool">
-                    <span id="pool-away-label">Away (Chelsea)</span>
-                    <strong id="pool-away-amount">0</strong>
+                <div class="form-group">
+                    <label for="deposit-amount">Deposit Amount ($)</label>
+                    <input type="number" id="deposit-amount" placeholder="1000">
                 </div>
-                <div class="pool">
-                    <span id="pool-draw-label">Draw</span>
-                    <strong id="pool-draw-amount">0</strong>
-                </div>
+                <button id="deposit-btn" class="btn-primary" style="width: auto; padding: 10px 15px;">Deposit</button>
             </div>
-
-            <div class="form-group">
-                <label for="user-address">Your Address (Simulated)</label>
-                <input type="text" id="user-address" placeholder="e.g., 'Alice'">
+            <div style="text-align: right;">
+                <span id="current-user-label">No user selected</span>
+                <div id="current-balance">$ 0</div>
             </div>
-            <div class="form-group">
-                <label for="team-choice">Your Choice</label>
-                <select id="team-choice">
-                    <option value="home">Home (Arsenal)</option>
-                    <option value="away">Away (Chelsea)</option>
-                    <option value="draw">Draw</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="bet-amount">Amount</label>
-                <input type="number" id="bet-amount" placeholder="100">
-            </div>
-            <button id="place-bet-btn">Place Bet</button>
         </div>
 
-        <div class="market-card">
-            <h2>Market Resolution</h2>
-            <button id="resolve-market-btn">Resolve Market</button>
-        </div>
-
-        <div class="market-card">
-            <h2>🤖 Advanced: AI Justice Market (MVP)</h2>
-            <p><strong>Powered by GenLayer AI Judge</strong> - This market uses AI to analyze match reports and determine the Man of the Match.</p>
-            <div class="pools">
-                <div class="pool">
-                    <span>Total Pot</span>
-                    <strong id="mvp-total-pot">0</strong>
+        <div class="main-content">
+            
+            <div class="column">
+                <div class="card">
+                    <h2>📊 Market 1: Match Score</h2>
+                    <p style="color: #666; font-size: 0.95em;">Event 441613: Arsenal vs Chelsea<br><strong>Type:</strong> Objective (API-Based)</p>
+                    <div class="form-group">
+                        <label for="score-team-choice">Your Choice</label>
+                        <select id="score-team-choice">
+                            <option value="home">Home (Arsenal)</option>
+                            <option value="away">Away (Chelsea)</option>
+                            <option value="draw">Draw</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="score-bet-amount">Amount ($)</label>
+                        <input type="number" id="score-bet-amount" placeholder="100">
+                    </div>
+                    <button id="score-place-bet-btn" class="btn-primary">Place Score Bet</button>
+                    <hr>
+                    <button id="score-resolve-btn" class="btn-secondary">Resolve Score Market</button>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="mvp-user-address">Your Address (Simulated)</label>
-                <input type="text" id="mvp-user-address" placeholder="e.g., 'Alice'">
+            <div class="column">
+                <div class="card">
+                    <h2>🤖 Market 2: Man of the Match</h2>
+                    <p style="color: #666; font-size: 0.95em;">Event 441613: Arsenal vs Chelsea<br><strong>Type:</strong> Subjective (AI Judge)</p>
+                    <div class="form-group">
+                        <label for="mvp-player-name">Player Name</label>
+                        <input type="text" id="mvp-player-name" placeholder="e.g., Bukayo Saka">
+                    </div>
+                    <div class="form-group">
+                        <label for="mvp-bet-amount">Amount ($)</label>
+                        <input type="number" id="mvp-bet-amount" placeholder="50">
+                    </div>
+                    <button id="mvp-place-bet-btn" class="btn-primary">Place MVP Bet</button>
+                    <hr>
+                    <button id="mvp-resolve-btn" class="btn-secondary">Resolve MVP Market (AI)</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="mvp-player">Player Name (who will be MVP?)</label>
-                <input type="text" id="mvp-player" placeholder="e.g., 'Bukayo Saka'">
-            </div>
-            <div class="form-group">
-                <label for="mvp-amount">Amount</label>
-                <input type="number" id="mvp-amount" placeholder="100">
-            </div>
-            <button id="place-mvp-bet-btn">Place MVP Bet</button>
+
         </div>
 
-        <div class="market-card">
-            <button id="resolve-mvp-market-btn" style="background-color: #9c27b0;">Resolve MVP Market (AI Judge)</button>
+        <div class="card">
+            <h2>📝 Live dApp Logs (Simulation)</h2>
+            <div id="logs"></div>
         </div>
-
-        <div id="logs"></div>
     </div>
 
     <script>
-        // Wait for the document to be fully loaded
         document.addEventListener("DOMContentLoaded", () => {
             
-            // Get all interactive elements
-            const placeBetBtn = document.getElementById("place-bet-btn");
-            const resolveMarketBtn = document.getElementById("resolve-market-btn");
-            const placeMvpBetBtn = document.getElementById("place-mvp-bet-btn");
-            const resolveMvpMarketBtn = document.getElementById("resolve-mvp-market-btn");
+            // --- STATE ---
+            let userBalances = {};
+            let currentUser = "";
+            let scoreMarketState = {
+                bets: [],
+                totalPot: 0,
+                isResolved: false,
+                testData: {
+                    "Alice": { team: "home", amount: 100 },
+                    "Bob": { team: "away", amount: 50 },
+                    "Charlie": { team: "draw", amount: 20 },
+                    "David": { team: "draw", amount: 30 },
+                    totalPot: 200,
+                    winner: 'draw',
+                    winners_pot: 50
+                }
+            };
+            let mvpMarketState = {
+                bets: [],
+                totalPot: 0,
+                isResolved: false,
+                testData: {
+                    "Alice": { player: "Bukayo Saka", amount: 100 },
+                    "Bob": { player: "Cole Palmer", amount: 50 },
+                    totalPot: 150,
+                    winner: 'Bukayo Saka',
+                    winners_pot: 100
+                }
+            };
+
+            // --- UI ELEMENTS ---
+            const userSelect = document.getElementById("user-select");
+            const depositAmountEl = document.getElementById("deposit-amount");
+            const depositBtn = document.getElementById("deposit-btn");
+            const currentUserLabel = document.getElementById("current-user-label");
+            const currentBalance = document.getElementById("current-balance");
             const logs = document.getElementById("logs");
 
-            // Pool amounts
-            const poolHomeEl = document.getElementById("pool-home-amount");
-            const poolAwayEl = document.getElementById("pool-away-amount");
-            const poolDrawEl = document.getElementById("pool-draw-amount");
-            const mvpTotalPotEl = document.getElementById("mvp-total-pot");
+            const scoreBetAmountEl = document.getElementById("score-bet-amount");
+            const scoreTeamChoiceEl = document.getElementById("score-team-choice");
+            const scorePlaceBetBtn = document.getElementById("score-place-bet-btn");
+            const scoreResolveBtn = document.getElementById("score-resolve-btn");
 
-            // Input fields
-            const userAddressEl = document.getElementById("user-address");
-            const teamChoiceEl = document.getElementById("team-choice");
-            const betAmountEl = document.getElementById("bet-amount");
-            const mvpUserAddressEl = document.getElementById("mvp-user-address");
-            const mvpPlayerEl = document.getElementById("mvp-player");
-            const mvpAmountEl = document.getElementById("mvp-amount");
+            const mvpPlayerNameEl = document.getElementById("mvp-player-name");
+            const mvpBetAmountEl = document.getElementById("mvp-bet-amount");
+            const mvpPlaceBetBtn = document.getElementById("mvp-place-bet-btn");
+            const mvpResolveBtn = document.getElementById("mvp-resolve-btn");
 
-            // Application state
-            let poolHome = 0;
-            let poolAway = 0;
-            let poolDraw = 0;
-            let isResolved = false;
-            
-            // MVP Market state
-            let mvpBets = {}; // {"Bukayo Saka": [{"user": "Alice", "amount": 100}]}
-            let mvpTotalPot = 0;
-            let mvpIsResolved = false;
-
-            // Log helper function
+            // --- HELPER FUNCTIONS ---
             function log(message) {
                 console.log(message);
-                logs.innerHTML += `> ${message}<br>`;
-                logs.scrollTop = logs.scrollHeight; // Auto-scroll to bottom
+                logs.innerHTML = `<span>[${new Date().toLocaleTimeString()}] ${message}</span>` + logs.innerHTML;
+                logs.scrollTop = logs.scrollHeight;
             }
 
-            // --- Place Bet Button Logic ---
-            placeBetBtn.addEventListener("click", () => {
-                if (isResolved) {
-                    log("Error: Market is already resolved.");
-                    return;
+            function updateBalanceDisplay() {
+                if (currentUser) {
+                    const balance = userBalances[currentUser] || 0;
+                    currentUserLabel.innerText = `Current User: ${currentUser}`;
+                    currentBalance.innerText = `$ ${balance}`;
+                } else {
+                    currentUserLabel.innerText = "No user selected";
+                    currentBalance.innerText = "$ 0";
                 }
+            }
 
-                const user = userAddressEl.value || "Anonymous";
-                const team = teamChoiceEl.value;
-                const amount = parseInt(betAmountEl.value) || 0;
-
+            function checkUserAndBalance(amount) {
+                if (!currentUser) {
+                    log("❌ Error: Please select a user first.");
+                    return false;
+                }
+                const balance = userBalances[currentUser] || 0;
+                if (balance < amount) {
+                    log(`❌ Error: Insufficient funds for ${currentUser}. Balance: $${balance}, Bet: $${amount}`);
+                    return false;
+                }
                 if (amount <= 0) {
-                    log("Error: Please enter a valid amount.");
-                    return;
+                    log("❌ Error: Bet amount must be positive.");
+                    return false;
                 }
+                return true;
+            }
 
-                log(`Simulating: ${user} bets ${amount} on '${team}'...`);
-
-                // === THIS IS THE SIMULATION PART ===
-                // TODO: Replace this with the GenLayer JS SDK call
-                // e.g., await genLayer.contract.call('place_bet', user, team, amount);
-                
-                // Simulate updating the pools
-                if (team === 'home') {
-                    poolHome += amount;
-                    poolHomeEl.innerText = poolHome;
-                } else if (team === 'away') {
-                    poolAway += amount;
-                    poolAwayEl.innerText = poolAway;
-                } else if (team === 'draw') {
-                    poolDraw += amount;
-                    poolDrawEl.innerText = poolDraw;
+            // --- WALLET LOGIC ---
+            userSelect.addEventListener("change", () => {
+                currentUser = userSelect.value;
+                updateBalanceDisplay();
+                if (currentUser) {
+                    log(`✓ User '${currentUser}' selected.`);
                 }
-
-                log(`Success: Bet placed. Total Pot: ${poolHome + poolAway + poolDraw}`);
-                
-                // Clear inputs
-                userAddressEl.value = "";
-                betAmountEl.value = "";
             });
 
-            // --- Resolve Market Button Logic ---
-            resolveMarketBtn.addEventListener("click", () => {
-                if (isResolved) {
-                    log("Error: Market has already been resolved.");
+            depositBtn.addEventListener("click", () => {
+                const amount = parseInt(depositAmountEl.value) || 0;
+                if (!currentUser) {
+                    log("❌ Error: Please select a user to deposit funds.");
                     return;
                 }
-
-                log("Resolving market...");
-                log("Simulating: Calling 'resolve_market()' function on contract...");
-                log("Simulating: Contract is now calling TheSportsDB API...");
-
-                // Disable buttons to show work is being done
-                placeBetBtn.disabled = true;
-                resolveMarketBtn.disabled = true;
-
-                // === THIS IS THE SIMULATION PART ===
-                // TODO: Replace this with the GenLayer JS SDK call
-                // e.g., await genLayer.contract.call('resolve_market');
-
-                // We use a 3-second timeout to simulate the API call and blockchain confirmation
-                setTimeout(() => {
-                    // Generate random score
-                    const homeScore = Math.floor(Math.random() * 5);
-                    const awayScore = Math.floor(Math.random() * 5);
-                    
-                    log("...API call successful. Match finished.");
-                    log(`...Score: ${homeScore} (Home) - ${awayScore} (Away)`);
-                    
-                    // Determine winner randomly
-                    let winner;
-                    if (homeScore > awayScore) {
-                        winner = "home";
-                        log("...Winner determined: 'home'");
-                    } else if (awayScore > homeScore) {
-                        winner = "away";
-                        log("...Winner determined: 'away'");
-                    } else {
-                        winner = "draw";
-                        log("...Winner determined: 'draw'");
-                    }
-                    
-                    log("...Processing payouts...");
-                    
-                    // Calculate winner pot
-                    const totalPot = poolHome + poolAway + poolDraw;
-                    let winnerPot = 0;
-                    
-                    if (winner === "home") {
-                        winnerPot = poolHome;
-                    } else if (winner === "away") {
-                        winnerPot = poolAway;
-                    } else {
-                        winnerPot = poolDraw;
-                    }
-                    
-                    if (winnerPot > 0) {
-                        log(`PAYOUT PROCESSED (Simulation): Winners on '${winner}' are paid.`);
-                        log(`Total winners pot: ${winnerPot}, Total pool: ${totalPot}`);
-                    } else {
-                        log(`No bets were placed on '${winner}'.`);
-                    }
-
-                    log("Market is now resolved and closed.");
-                    isResolved = true;
-                }, 3000); // 3-second delay
-            });
-
-            // --- Place MVP Bet Button Logic ---
-            placeMvpBetBtn.addEventListener("click", () => {
-                if (mvpIsResolved) {
-                    log("Error: MVP Market is already resolved.");
-                    return;
-                }
-
-                const user = mvpUserAddressEl.value || "Anonymous";
-                const playerName = mvpPlayerEl.value || "";
-                const amount = parseInt(mvpAmountEl.value) || 0;
-
-                if (!playerName) {
-                    log("Error: Please enter a player name.");
-                    return;
-                }
-
                 if (amount <= 0) {
-                    log("Error: Please enter a valid amount.");
+                    log("❌ Error: Please enter a positive deposit amount.");
                     return;
                 }
-
-                log(`Simulating: ${user} bets ${amount} on MVP '${playerName}'...`);
-
-                // Simulate updating MVP bets
-                if (!mvpBets[playerName]) {
-                    mvpBets[playerName] = [];
-                }
-                mvpBets[playerName].push({"user": user, "amount": amount});
-                mvpTotalPot += amount;
-                mvpTotalPotEl.innerText = mvpTotalPot;
-
-                log(`Success: MVP bet placed. Total MVP Pot: ${mvpTotalPot}`);
                 
-                // Clear inputs
-                mvpUserAddressEl.value = "";
-                mvpPlayerEl.value = "";
-                mvpAmountEl.value = "";
+                userBalances[currentUser] = (userBalances[currentUser] || 0) + amount;
+                log(`✓ Deposit: $${amount} deposited for ${currentUser}. New balance: $${userBalances[currentUser]}`);
+                updateBalanceDisplay();
+                depositAmountEl.value = "";
             });
 
-            // --- Resolve MVP Market Button Logic ---
-            resolveMvpMarketBtn.addEventListener("click", () => {
-                if (mvpIsResolved) {
-                    log("Error: MVP Market has already been resolved.");
+            // --- SCORE MARKET LOGIC ---
+            scorePlaceBetBtn.addEventListener("click", () => {
+                const amount = parseInt(scoreBetAmountEl.value) || 0;
+                const team = scoreTeamChoiceEl.value;
+
+                if (!checkUserAndBalance(amount)) return;
+                
+                userBalances[currentUser] -= amount;
+                updateBalanceDisplay();
+                
+                scoreMarketState.bets.push({ user: currentUser, team: team, amount: amount });
+                scoreMarketState.totalPot += amount;
+                
+                log(`📍 SCORE BET: ${currentUser} bet $${amount} on '${team}'. New balance: $${userBalances[currentUser]}`);
+                log(`   Score Market Pot: $${scoreMarketState.totalPot}`);
+                scoreBetAmountEl.value = "";
+            });
+
+            scoreResolveBtn.addEventListener("click", () => {
+                if (scoreMarketState.isResolved) {
+                    log("❌ Score Market already resolved.");
                     return;
                 }
+                log("⏳ Resolving Score Market... (Mocking backend call)");
+                
+                scoreResolveBtn.disabled = true;
+                scorePlaceBetBtn.disabled = true;
 
-                if (mvpTotalPot === 0) {
-                    log("Error: No MVP bets placed.");
-                    return;
-                }
-
-                log("\n========================================");
-                log("🤖 AI JUSTICE MARKET RESOLUTION");
-                log("========================================");
-                log("Resolving MVP Market...");
-                log("Calling GenLayer AI Judge...");
-                log("Step 1: Calling Google News API for match reports...");
-                log("Step 2: Retrieved 5 match report articles.");
-                log("Step 3: Feeding article summaries to GenLayer AI Model...");
-                log("Step 4: AI Prompt: 'Who was Man of the Match?'");
-
-                // Disable buttons to show work is being done
-                placeBetBtn.disabled = true;
-                resolveMarketBtn.disabled = true;
-                placeMvpBetBtn.disabled = true;
-                resolveMvpMarketBtn.disabled = true;
-
-                // Simulate AI analysis (5-second delay for drama)
                 setTimeout(() => {
-                    log("Step 5: AI Analysis in progress...");
-                    log("Reading articles...");
-                    log("Extracting player mentions...");
-                    log("Calculating player performance scores...");
-                    log("Filtering top candidates...");
-                    
-                    // AI's decision: Random MVP from possible candidates
-                    const candidates = [
-                        "Bukayo Saka",
-                        "Reece James",
-                        "Kai Havertz",
-                        "Ben White",
-                        "Martin Ödegaard",
-                        "Declan Rice"
-                    ];
-                    
-                    const mvpWinner = candidates[Math.floor(Math.random() * candidates.length)];
-                    
-                    log("----------------------------------------");
-                    log(`✓ AI JUDGE DECISION: ${mvpWinner}`);
-                    log("----------------------------------------");
-                    
-                    // Process payouts
-                    if (mvpWinner in mvpBets) {
-                        const winnersList = mvpBets[mvpWinner];
-                        const winnersPot = winnersList.reduce((sum, bet) => sum + bet.amount, 0);
-                        
-                        log(`\nProcessing payouts for '${mvpWinner}'`);
-                        log(`Winners' Pool: ${winnersPot} tokens`);
-                        log(`Total Pot: ${mvpTotalPot} tokens\n`);
-                        
-                        for (let bet of winnersList) {
-                            const payout = (bet.amount / winnersPot) * mvpTotalPot;
-                            log(`PAYOUT PROCESSED (Simulation): ${bet.user} receives ${payout.toFixed(2)} tokens.`);
-                        }
-                    } else {
-                        log(`No bets were placed on the winner: ${mvpWinner}`);
-                    }
+                    scoreMarketState.isResolved = true;
+                    const testData = scoreMarketState.testData;
+                    log("✓ Mock API call complete. Score: 2-2. Winner: 'draw'");
 
-                    log("MVP Market is now resolved and closed.");
-                    log("========================================\n");
-                    mvpIsResolved = true;
-                }, 5000); // 5-second delay
+                    log("✓ Processing payouts for 'draw' winners...");
+                    const payout_charlie = (testData.Charlie.amount / testData.winners_pot) * testData.totalPot;
+                    const payout_david = (testData.David.amount / testData.winners_pot) * testData.totalPot;
+                    
+                    if (userBalances["Charlie"] !== undefined) {
+                        userBalances["Charlie"] += payout_charlie;
+                        log(`💰 PAYOUT: Charlie receives $${payout_charlie.toFixed(2)}. New balance: $${userBalances["Charlie"].toFixed(2)}`);
+                    }
+                    if (userBalances["David"] !== undefined) {
+                        userBalances["David"] += payout_david;
+                        log(`💰 PAYOUT: David receives $${payout_david.toFixed(2)}. New balance: $${userBalances["David"].toFixed(2)}`);
+                    }
+                    
+                    log("✅ Score Market RESOLVED.");
+                    updateBalanceDisplay();
+                }, 2000);
             });
 
-            log("Frontend initialized. Ready to place bets.");
+            // --- MVP MARKET LOGIC ---
+            mvpPlaceBetBtn.addEventListener("click", () => {
+                const amount = parseInt(mvpBetAmountEl.value) || 0;
+                const player = mvpPlayerNameEl.value;
+
+                if (!player) {
+                    log("❌ Error: Please enter a player name.");
+                    return;
+                }
+                if (!checkUserAndBalance(amount)) return;
+
+                userBalances[currentUser] -= amount;
+                updateBalanceDisplay();
+
+                mvpMarketState.bets.push({ user: currentUser, player: player, amount: amount });
+                mvpMarketState.totalPot += amount;
+                
+                log(`🎯 MVP BET: ${currentUser} bet $${amount} on '${player}'. New balance: $${userBalances[currentUser]}`);
+                log(`   MVP Market Pot: $${mvpMarketState.totalPot}`);
+                mvpBetAmountEl.value = "";
+            });
+
+            mvpResolveBtn.addEventListener("click", () => {
+                if (mvpMarketState.isResolved) {
+                    log("❌ MVP Market already resolved.");
+                    return;
+                }
+                log("⏳ Resolving MVP Market... (Mocking AI Judge backend call)");
+                
+                mvpResolveBtn.disabled = true;
+                mvpPlaceBetBtn.disabled = true;
+
+                setTimeout(() => {
+                    mvpMarketState.isResolved = true;
+                    const testData = mvpMarketState.testData;
+                    log("✓ Mock AI analysis complete. AI Judge decision: 'Bukayo Saka'");
+
+                    log("✓ Processing payouts for 'Bukayo Saka' winners...");
+                    const payout_alice = (testData.Alice.amount / testData.winners_pot) * testData.totalPot;
+                    
+                    if (userBalances["Alice"] !== undefined) {
+                        userBalances["Alice"] += payout_alice;
+                        log(`💰 PAYOUT: Alice receives $${payout_alice.toFixed(2)}. New balance: $${userBalances["Alice"].toFixed(2)}`);
+                    }
+                    
+                    log("✅ MVP Market RESOLVED.");
+                    updateBalanceDisplay();
+                }, 3000);
+            });
+
+            // Initial Log
+            log("🚀 dApp Frontend Initialized. Select a user and deposit funds to begin.");
         });
     </script>
 </body>

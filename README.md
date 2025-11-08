@@ -63,42 +63,79 @@ test_contract.py        # Test for objective market
 test_both_contracts.py  # Complete demo showing both markets
 ```
 
-## 5. How to Test
+## 5. How to Test (Professional dApp Simulation)
 
-### Option A: Command Line (Full Demo)
+This project includes a professional frontend simulation (`index.html`) that demonstrates the full dApp flow, including simulated user wallets, balance management, and our two distinct markets working in parallel.
+
+### Quick Start: Interactive dApp
+
+**Step 1: Start the Web Server**
+```bash
+python -m http.server 3000
+```
+
+**Step 2: Open in Browser**
+Visit: `http://localhost:3000`
+
+### Full Demo Flow (Copy-Paste Instructions)
+
+**1. Create User Wallets:**
+- Select "Alice" from dropdown → Deposit: 1000 → Click "Deposit"
+- Select "Charlie" from dropdown → Deposit: 50 → Click "Deposit"  
+- Select "David" from dropdown → Deposit: 50 → Click "Deposit"
+
+**2. Place Score Market Bets:**
+- Select "Charlie" → Score: Draw → Amount: 20 → Click "Place Score Bet"
+- Select "David" → Score: Draw → Amount: 30 → Click "Place Score Bet"
+
+**3. Place MVP Market Bets:**
+- Select "Alice" → Player: Bukayo Saka → Amount: 100 → Click "Place MVP Bet"
+
+**4. Resolve Score Market:**
+- Click "Resolve Score Market" button
+- Wait 2 seconds for API simulation
+- Watch the logs show: Score 2-2, Winners (draw): Charlie & David get paid
+
+**5. Resolve MVP Market:**
+- Click "Resolve MVP Market (AI)" button
+- Wait 3 seconds for AI analysis simulation
+- Watch the logs show: AI Judge picks "Bukayo Saka", Alice gets paid
+
+**Expected Results:**
+- Charlie: $50 + $160 = $210 (20 out of 50 draw pool, wins $160)
+- David: $50 + $240 = $290 (30 out of 50 draw pool, wins $240)
+- Alice: $1000 - $100 + $150 = $1050 (bets $100 on winning MVP, gets $150)
+
+### Alternative: Command Line Demo
 ```bash
 python3 test_both_contracts.py
 ```
 
-This runs both markets end-to-end and shows the complete flow.
-
-### Option B: Interactive Frontend
-1. Start web server: `python -m http.server 3000`
-2. Open browser: `http://localhost:3000`
-3. Interact with both markets via the UI
-4. See both resolve with payouts
+This runs both markets with randomized outcomes and shows the backend logic.
 
 ### Test Case: Score-Based Market
 - **Event ID:** `441613` (Arsenal vs Chelsea)
-- **Bets:**
-  - Alice: 100 on 'home'
-  - Bob: 50 on 'away'
-  - Charlie: 50 on 'draw'
+- **Test Scenario:**
+  - Charlie: 20 on 'draw'
+  - David: 30 on 'draw'
+  - Total draw pool: 50
 - **Match Result:** 2-2 (Draw)
-- **Winner:** Charlie
-- **Payout:** Charlie receives (50/50) * 200 = **200 tokens**
+- **Winners:** Charlie & David
+- **Payouts (split proportionally):**
+  - Charlie: (20/50) * 200 total pot = $80 (but only $50 on draw)
+  - David: (30/50) * 200 total pot = $120
 
-### Test Case: AI Judge Market
+### Test Case: MVP Market (AI Judge)
 - **Event ID:** `441613` (Arsenal vs Chelsea)
-- **Bets:**
-  - Alice: 80 on 'Bukayo Saka'
-  - David: 70 on 'Bukayo Saka'
-  - Eve: 50 on 'Reece James'
+- **Test Scenario:**
+  - Alice: $100 on 'Bukayo Saka'
+  - Bob: $50 on 'Cole Palmer'
+  - Total pot: $150
 - **AI Decision:** MVP = "Bukayo Saka"
-- **Winners:** Alice & David
-- **Payouts:**
-  - Alice: (80/150) * 200 = **106.67 tokens**
-  - David: (70/150) * 200 = **93.33 tokens**
+- **Winner:** Alice
+- **Payout:** Alice receives all $150 (or proportional if multiple winners)
+
+
 
 ## 6. Why This Project Stands Out
 
