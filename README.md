@@ -6,23 +6,21 @@ Two **Intelligent Contracts** showcasing GenLayer's unique capabilities:
 - **Market 1 (Score):** Objective resolution via TheSportsDB API (oracle-less internet access)
 - **Market 2 (MVP):** Subjective AI-judged market (AI integration for ground truth)
 
-## Quick Start
+## Demo
 
-### 1. Run Backend Tests
-```bash
-python3 test_both_contracts.py
-```
-
-### 2. Run Frontend dApp
 ```bash
 python -m http.server 3000
 ```
-Visit: `http://localhost:3000`
 
-### 3. Run Comprehensive Tests
-```bash
-python3 test_frontend_scenarios.py
-```
+Visit `http://localhost:3000`
+
+### Screenshots
+
+**Placing Bets**
+![Betting Phase](screenshots/bet.png)
+
+**Market Resolution**
+![Resolution Phase](screenshots/resolve.png)
 
 ## Tech Stack
 
