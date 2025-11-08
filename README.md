@@ -61,7 +61,7 @@ README.md                     # This file
 ✅ **Oracle-less** - Direct API calls, no intermediaries  
 ✅ **Complete Stack** - Backend + Frontend + Tests  
 ✅ **Real APIs** - TheSportsDB (not fake data)  
-✅ **Professional UI** - 4 users, wallets, real-time logs  
+✅ **Interactive UI** - 4 users, wallets, real-time logs  
 ✅ **Tested** - 600+ test cases validating payout logic
 
 ## Testing & Validation
