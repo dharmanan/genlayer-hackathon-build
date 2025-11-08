@@ -337,6 +337,12 @@
                 const team = scoreTeamChoiceEl.value;
 
                 if (!checkUserAndBalance(amount)) return;
+
+                // Check if user already has a bet in this market
+                if (scoreMarketState.bets.some(bet => bet.user === currentUser)) {
+                    log("❌ You already have a bet in this market. Resolve it first!");
+                    return;
+                }
                 
                 userBalances[currentUser] -= amount;
                 updateBalanceDisplay();
@@ -418,6 +424,12 @@
                     return;
                 }
                 if (!checkUserAndBalance(amount)) return;
+
+                // Check if user already has a bet in this market
+                if (mvpMarketState.bets.some(bet => bet.user === currentUser)) {
+                    log("❌ You already have a bet in this market. Resolve it first!");
+                    return;
+                }
 
                 userBalances[currentUser] -= amount;
                 updateBalanceDisplay();
