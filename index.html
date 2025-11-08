@@ -378,6 +378,8 @@
 
                     // Get winners from actual bets
                     const winners = scoreMarketState.bets.filter(bet => bet.team === winner);
+                    const losers = scoreMarketState.bets.filter(bet => bet.team !== winner);
+                    const losersPot = losers.reduce((sum, bet) => sum + bet.amount, 0);
                     
                     if (winners.length === 0) {
                         log("⚠️ No one bet on the winning outcome!");
@@ -388,7 +390,10 @@
                     
                     const winnersPot = winners.reduce((sum, bet) => sum + bet.amount, 0);
                     
-                    log("✓ Processing payouts for '" + winner + "' winners...");
+                    log(`📊 Betting Breakdown:`);
+                    log(`   Winners (${winner}): ${winners.map(b => b.user).join(', ')} - Pot: $${winnersPot}`);
+                    if (losers.length > 0) log(`   Losers: ${losers.map(b => `${b.user} (${b.team}, $${b.amount})`).join(', ')}`);
+                    log(`✓ Processing payouts for '${winner}' winners...`);
                     
                     winners.forEach(bet => {
                         const payout = (bet.amount / winnersPot) * scoreMarketState.totalPot;
