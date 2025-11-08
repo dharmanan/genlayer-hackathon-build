@@ -245,8 +245,11 @@
                 isResolved: false
             };
             let mvpMarketState = {
-                bets: [],
-                totalPot: 0,
+                bets: [
+                    { user: "Alice", player: "Bukayo Saka", amount: 80 },
+                    { user: "Charlie", player: "Kai Havertz", amount: 60 }
+                ],
+                totalPot: 140,
                 isResolved: false
             };
 
@@ -466,6 +469,11 @@
 
                     // Find all bets on the winning player
                     const winningBets = mvpMarketState.bets.filter(bet => bet.player === mvpWinner);
+                    const losingBets = mvpMarketState.bets.filter(bet => bet.player !== mvpWinner);
+                    
+                    log(`📊 MVP Betting Breakdown:`);
+                    log(`   Winners (${mvpWinner}): ${winningBets.length > 0 ? winningBets.map(b => b.user).join(', ') : 'None'}`);
+                    if (losingBets.length > 0) log(`   Losers: ${losingBets.map(b => `${b.user} (${b.player})`).join(', ')}`);
                     
                     if (winningBets.length === 0) {
                         log(`⚠️  No bets were placed on the winner: ${mvpWinner}. No payouts.`);
