@@ -8,6 +8,7 @@
 
 import requests
 import json
+import random
 
 class RealPredictionMarketContract:
     """
@@ -118,6 +119,14 @@ class RealPredictionMarketContract:
 
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
+
+    def _generate_random_score(self):
+        """
+        Generate a random match score (for testing/simulation).
+        """
+        home_score = random.randint(0, 4)
+        away_score = random.randint(0, 4)
+        return home_score, away_score
 
     def _process_payouts(self):
         """
@@ -273,17 +282,27 @@ class AIJusticeMarketContract:
         """
         Simulates the AI analysis process.
         In a real system, this would call GenLayer's AI infrastructure.
-        """
-        # For this hackathon, we hardcode the MVP based on the mock articles
-        # (In reality, the AI would analyze the actual articles)
         
+        Returns a random MVP from a list of possible candidates.
+        """
         print("Reading articles...")
         print("Extracting player mentions...")
         print("Calculating player performance scores...")
         print("Filtering top candidates...")
         
-        # The AI "decides" Bukayo Saka is the MVP
-        return "Bukayo Saka"
+        # Possible MVP candidates (randomized)
+        candidates = [
+            "Bukayo Saka",
+            "Reece James",
+            "Kai Havertz",
+            "Ben White",
+            "Martin Ödegaard",
+            "Declan Rice"
+        ]
+        
+        # AI "decides" on a random MVP from the candidates
+        selected_mvp = random.choice(candidates)
+        return selected_mvp
 
     def _process_mvp_payouts(self):
         """

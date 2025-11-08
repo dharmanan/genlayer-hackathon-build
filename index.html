@@ -293,27 +293,45 @@
 
                 // We use a 3-second timeout to simulate the API call and blockchain confirmation
                 setTimeout(() => {
+                    // Generate random score
+                    const homeScore = Math.floor(Math.random() * 5);
+                    const awayScore = Math.floor(Math.random() * 5);
+                    
                     log("...API call successful. Match finished.");
-                    log("...Score: 2 (Home) - 2 (Away)");
-                    log("...Winner determined: 'draw'");
+                    log(`...Score: ${homeScore} (Home) - ${awayScore} (Away)`);
+                    
+                    // Determine winner randomly
+                    let winner;
+                    if (homeScore > awayScore) {
+                        winner = "home";
+                        log("...Winner determined: 'home'");
+                    } else if (awayScore > homeScore) {
+                        winner = "away";
+                        log("...Winner determined: 'away'");
+                    } else {
+                        winner = "draw";
+                        log("...Winner determined: 'draw'");
+                    }
+                    
                     log("...Processing payouts...");
                     
-                    // Simulate the payout logic from our test case
-                    // Total Pot = 200 (if Alice=100 home, Bob=50 away, Charlie=50 draw)
-                    // We'll just hardcode the test case from our README
-                    // (Assuming bets: 100 home, 50 away, 50 draw)
+                    // Calculate winner pot
                     const totalPot = poolHome + poolAway + poolDraw;
-                    const winnerPot = poolDraw;
+                    let winnerPot = 0;
+                    
+                    if (winner === "home") {
+                        winnerPot = poolHome;
+                    } else if (winner === "away") {
+                        winnerPot = poolAway;
+                    } else {
+                        winnerPot = poolDraw;
+                    }
                     
                     if (winnerPot > 0) {
-                        // Simulating Charlie (bet 20) and David (bet 30)
-                        // This part is hard to simulate perfectly without the real bet data,
-                        // so we just show the principle:
-                        log("PAYOUT PROCESSED (Simulation): Winners on 'draw' are paid.");
-                        log(`PAYOUT: User 'Charlie' (bet 20) receives ${(20/50) * totalPot} tokens.`);
-                        log(`PAYOUT: User 'David' (bet 30) receives ${(30/50) * totalPot} tokens.`);
+                        log(`PAYOUT PROCESSED (Simulation): Winners on '${winner}' are paid.`);
+                        log(`Total winners pot: ${winnerPot}, Total pool: ${totalPot}`);
                     } else {
-                        log("No bets were placed on 'draw'.");
+                        log(`No bets were placed on '${winner}'.`);
                     }
 
                     log("Market is now resolved and closed.");
@@ -396,8 +414,17 @@
                     log("Calculating player performance scores...");
                     log("Filtering top candidates...");
                     
-                    // AI's decision: Bukayo Saka is MVP
-                    const mvpWinner = "Bukayo Saka";
+                    // AI's decision: Random MVP from possible candidates
+                    const candidates = [
+                        "Bukayo Saka",
+                        "Reece James",
+                        "Kai Havertz",
+                        "Ben White",
+                        "Martin Ödegaard",
+                        "Declan Rice"
+                    ];
+                    
+                    const mvpWinner = candidates[Math.floor(Math.random() * candidates.length)];
                     
                     log("----------------------------------------");
                     log(`✓ AI JUDGE DECISION: ${mvpWinner}`);
