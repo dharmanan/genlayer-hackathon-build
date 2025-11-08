@@ -93,4 +93,3 @@ This project is built for the **GenLayer November 2025 Hackathon** (https://dora
 - ✅ AI integration for subjective resolution
 - ✅ Real-world use case (prediction markets)
 - ✅ Production-ready code with tests
-- ✅ Professional dApp interface
