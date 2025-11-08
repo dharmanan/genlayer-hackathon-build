@@ -28,8 +28,8 @@ python3 test_frontend_scenarios.py
 
 - **Backend:** Python (Intelligent Contracts)
 - **Frontend:** HTML/CSS/JavaScript (Interactive dApp)
-- **APIs:** TheSportsDB (real data)
-- **AI:** GenLayer AI Model (simulated)
+- **APIs:** TheSportsDB (real, live data)
+- **AI:** GenLayer AI Model (architecture ready for real deployment)
 
 ## How Contracts Work
 

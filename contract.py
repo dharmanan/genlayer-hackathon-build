@@ -288,8 +288,16 @@ class AIJusticeMarketContract:
 
     def _simulated_ai_analysis(self, articles):
         """
-        Simulates the AI analysis process.
-        In a real system, this would call GenLayer's AI infrastructure.
+        AI analysis for MVP determination.
+        
+        CURRENT (Demo): Simulated analysis extracting player from mock articles
+        
+        PRODUCTION: Replace with real GenLayer AI call:
+        ```python
+        prompt = "Based on these match reports, who was the Man of the Match?"
+        ai_response = genLayer.ai.analyze(articles, prompt)
+        return ai_response
+        ```
         
         Extracts player name from articles (all articles mention the same player).
         """
