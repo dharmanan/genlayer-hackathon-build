@@ -175,8 +175,8 @@ class AIJusticeMarketContract:
     to resolve SUBJECTIVE bets (not just objective scores).
     
     How it works:
-    1. Contract fetches multiple news articles about the match from Google News API
-    2. Contract feeds these articles to an AI Model (e.g., GPT-4, Llama)
+    1. Contract fetches match articles from news APIs
+    2. Contract feeds articles to an AI Model (e.g., GPT-4, Llama)
     3. AI analyzes the articles and determines: "Who was the Man of the Match?"
     4. AI's answer becomes the "truth" and payouts are processed accordingly
     """
@@ -228,7 +228,7 @@ class AIJusticeMarketContract:
         Core function: Simulates the entire AI Judge process.
         
         In a real GenLayer environment, this would:
-        1. Call Google News API for match reports
+        1. Call news APIs for match reports
         2. Extract and summarize 5+ articles
         3. Feed summaries to an AI Model (GenLayer-provided)
         4. Ask AI: "Who was Man of the Match based on these reports?"
@@ -245,7 +245,7 @@ class AIJusticeMarketContract:
         print("="*70)
         
         print(f"\nResolving AI Justice Market for: {self.home_team} vs {self.away_team}")
-        print("Step 1: Calling Google News API for match reports...")
+        print("Step 1: Fetching match reports from news sources...")
         
         # Get actual players users bet on
         if not self.bets:
